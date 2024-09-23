@@ -1,0 +1,81 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+
+    id 'tech.yanand.maven-central-publish' version '1.2.0'
+}
+
+group = 'ru.swat1x'
+version = '1.8'
+
+java {
+    targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
+
+    withSourcesJar()
+    withJavadocJar()
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.apache.logging.log4j:log4j-api:2.19.0'
+    testImplementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+    testImplementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.22.1'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.7'
+    testImplementation 'org.slf4j:slf4j-api:2.0.7'
+    testImplementation libs.database.sql.mysql
+    testImplementation libs.database.sql.mariadb
+    testImplementation libs.guava
+    testImplementation libs.database.sql.hikaricp
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    compileOnly libs.jetbrains.annotations
+    compileOnly libs.logger.slf4j.api
+
+//    library libs.database.sql.hikaricp
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            artifactId = project.version
+            version = project.version
+
+            from components.java
+        }
+    }
+}
+
+signing {
+    // About GPG signing, please refer to https://central.sonatype.org/publish/requirements/gpg/
+    def signingKey = '<your signing key>'
+    def signingPassword = '<your signing password>'
+    useInMemoryPgpKeys(signingKey, signingPassword)
+
+    sign publishing.publications.mavenJava
+}
+
+mavenCentral {
+    repoDir = layout.buildDirectory.dir('repos/bundles')
+    // Token for Publisher API calls obtained from Sonatype official,
+    // it should be Base64 encoded of "username:password".
+    authToken = '<your token>'
+    // Whether the upload should be automatically published or not. Use 'USER_MANAGED' if you wish to do this manually.
+    // This property is optional and defaults to 'AUTOMATIC'.
+    publishingType = 'AUTOMATIC'
+    // Max wait time for status API to get 'PUBLISHING' or 'PUBLISHED' status when the publishing type is 'AUTOMATIC',
+    // or additionally 'VALIDATED' when the publishing type is 'USER_MANAGED'.
+    // This property is optional and defaults to 60 seconds.
+    maxWait = 60
+}

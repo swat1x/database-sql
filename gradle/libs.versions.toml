@@ -1,0 +1,18 @@
+[versions]
+shadow = "8.1.1"
+lombok = "1.18.28"
+guava = "33.0.0-jre"
+slf4j = "2.0.16"
+
+[plugins]
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+
+[libraries]
+lombok = { module  = "org.projectlombok:lombok", version.ref = "lombok" }
+guava   = { module  = "com.google.guava:guava", version.ref = "guava" }
+jetbrains-annotations   = { module  = "org.jetbrains:annotations", version = "24.0.0" }
+logger-slf4j-api   = { module  = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+
+database-sql-mysql   = { module  = "mysql:mysql-connector-java", version = "8.0.33" }
+database-sql-mariadb   = { module  = "org.mariadb.jdbc:mariadb-java-client", version = "3.3.2" }
+database-sql-hikaricp   = { module  = "com.zaxxer:HikariCP", version = "5.1.0" }
