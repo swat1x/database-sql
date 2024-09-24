@@ -23,9 +23,9 @@ implementation("ru.swat1x:database-sql:1.8")
 
 > Так же используется HikariCP зависимость
 
-## Sample usage
+## Пример использования
 
-### Connect to database
+### Подключение к базе данных
 
 ``` java
 SQLDatabase database = new SQLDatabase(
