@@ -1,5 +1,5 @@
 # Database connection library
-
+##### [Русскоязычная версия](/README-ru.md)
 ## How to import?
 
 Maven
@@ -90,5 +90,5 @@ DatabaseLogger slf4jDatabaseLogger = new Slf4jDatabaseLogger(slf4jLogger);
 DatabaseLogger log4jDatabaseLogger = new Log4jDatabaseLogger(log4jLogger);
 ```
 \
-For self-made build use `./gradlew build`
+For self-made build use `./gradlew shadowJar`
 
