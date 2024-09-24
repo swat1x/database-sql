@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.intellij.lang.annotations.Language;
 import ru.swat1x.database.sql.exception.SQLDatabaseException;
 import ru.swat1x.database.sql.executor.RequestExecutor;
 import org.jetbrains.annotations.NotNull;
@@ -19,12 +20,12 @@ public class SyncUpdateExecutor implements RequestExecutor<Integer> {
   HikariDataSource dataSource;
 
   @Override
-  public @NotNull Integer execute(@NotNull String query) {
+  public @NotNull Integer execute(@Language("sql") @NotNull String query) {
     return execute(query, new Object[]{});
   }
 
   @Override
-  public @NotNull Integer execute(@NotNull String query, @NotNull Object... args) {
+  public @NotNull Integer execute(@Language("sql") @NotNull String query, @NotNull Object... args) {
     try (Connection connection = dataSource.getConnection();
          PreparedStatement statement = connection.prepareStatement(query)) {
       for (int i = 0; i < args.length; i++) {

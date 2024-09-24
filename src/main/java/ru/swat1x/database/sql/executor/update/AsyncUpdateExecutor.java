@@ -3,6 +3,7 @@ package ru.swat1x.database.sql.executor.update;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.intellij.lang.annotations.Language;
 import ru.swat1x.database.sql.executor.RequestExecutor;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,12 +19,12 @@ public class AsyncUpdateExecutor implements RequestExecutor<CompletableFuture<In
   SyncUpdateExecutor syncExecutor;
 
   @Override
-  public @NotNull CompletableFuture<Integer> execute(@NotNull String query) {
+  public @NotNull CompletableFuture<Integer> execute(@Language("sql") @NotNull String query) {
     return completeFuture(() -> syncExecutor.execute(query));
   }
 
   @Override
-  public @NotNull CompletableFuture<Integer> execute(@NotNull String query, @NotNull Object... args) {
+  public @NotNull CompletableFuture<Integer> execute(@Language("sql") @NotNull String query, @NotNull Object... args) {
     return completeFuture(() -> syncExecutor.execute(query, args));
   }
 

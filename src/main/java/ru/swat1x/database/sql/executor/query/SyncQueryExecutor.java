@@ -28,14 +28,16 @@ public class SyncQueryExecutor implements QueryExecutor<QueryResult> {
   HikariDataSource dataSource;
 
   @Override
-  public @NotNull QueryResult execute(@NotNull String query) {
+  public @NotNull QueryResult execute(@Language("sql") @NotNull String query) {
     return execute(query, new Object[]{});
   }
 
   @Override
-  public @NotNull QueryResult execute(@Language("sql") @NotNull String query, @NotNull Object... args) {
-    try (Connection connection = dataSource.getConnection();
-         PreparedStatement statement = connection.prepareStatement(query)) {
+  public @NotNull QueryResult execute(@Language("sql") @NotNull String query,
+                                      @NotNull Object... args) {
+    try {
+      Connection connection = dataSource.getConnection();
+      PreparedStatement statement = connection.prepareStatement(query);
       for (int i = 0; i < args.length; i++) {
         statement.setObject(i + 1, args[i]);
       }
@@ -49,25 +51,37 @@ public class SyncQueryExecutor implements QueryExecutor<QueryResult> {
   }
 
   @Override
-  public void execute(@NotNull String query, @NotNull VoidQueryProcessor processor) {
+  public void execute(@Language("sql") @NotNull String query,
+                      @NotNull VoidQueryProcessor processor) {
     QueryResult result = execute(query);
     processor.process(result);
+    result.close();
   }
 
-  public <V> @NotNull V execute(@Language("sql") @NotNull String query, @NotNull ValueQueryProcessor<V> processor) {
+  public <V> @NotNull V execute(@Language("sql") @NotNull String query,
+                                @NotNull ValueQueryProcessor<V> processor) {
     QueryResult result = execute(query);
-    return processor.process(result);
+    V value = processor.process(result);
+    result.close();
+    return value;
   }
 
   @Override
-  public void execute(@NotNull String query, @NotNull VoidQueryProcessor processor, @NotNull Object... args) {
+  public void execute(@Language("sql") @NotNull String query,
+                      @NotNull VoidQueryProcessor processor,
+                      @NotNull Object... args) {
     QueryResult result = execute(query, args);
     processor.process(result);
+    result.close();
   }
 
-  public <V> @NotNull V execute(@Language("sql") @NotNull String query, @NotNull ValueQueryProcessor<V> processor, @NotNull Object... args) {
+  public <V> @NotNull V execute(@Language("sql") @NotNull String query,
+                                @NotNull ValueQueryProcessor<V> processor,
+                                @NotNull Object... args) {
     QueryResult result = execute(query, args);
-    return processor.process(result);
+    V value = processor.process(result);
+    result.close();
+    return value;
   }
 
 }

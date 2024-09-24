@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -11,6 +12,14 @@ import java.util.function.Consumer;
 public interface QueryResult {
 
   @NotNull ResultSet source();
+
+  default void close() {
+    try {
+      source().close();
+    } catch (SQLException e) {
+      throw new RuntimeException("Can't close ResultSet", e);
+    }
+  }
 
   @SneakyThrows
   default boolean next() {

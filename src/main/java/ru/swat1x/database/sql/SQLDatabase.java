@@ -1,11 +1,9 @@
 package ru.swat1x.database.sql;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.AccessLevel;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.*;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -15,13 +13,18 @@ import ru.swat1x.database.sql.executor.query.AsyncQueryExecutor;
 import ru.swat1x.database.sql.executor.query.SyncQueryExecutor;
 import ru.swat1x.database.sql.executor.update.AsyncUpdateExecutor;
 import ru.swat1x.database.sql.executor.update.SyncUpdateExecutor;
+import ru.swat1x.database.sql.logger.DatabaseLogger;
+import ru.swat1x.database.sql.logger.SoutDatabaseLogger;
+import ru.swat1x.database.sql.moved.ThreadFactoryBuilder;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Slf4j(topic = "database")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SQLDatabase {
+
+  @Setter
+  private static DatabaseLogger logger = new SoutDatabaseLogger();
 
   HikariDataSource dataSource;
   ExecutorService asyncExecutor;
@@ -32,7 +35,7 @@ public class SQLDatabase {
    * @param credentials Credentials for connection
    * @see ru.swat1x.database.sql.driver.Drivers Default drivers
    * @see Host Create host data object
-   * @see Credentials#of (String, String) Create credentials object
+   * @see Credentials#of Create a credential object
    * @see Credentials#withNoPassword(String) Create credentials with no password
    */
   public SQLDatabase(
@@ -47,11 +50,11 @@ public class SQLDatabase {
    * @param driver      Driver for database connection
    * @param host        Host of database server
    * @param database    Database name for connection
-   * @see SQLDatabase#SQLDatabase(SQLDriver, Host, Credentials)
    * @param credentials Credentials for connection
+   * @see SQLDatabase#SQLDatabase(SQLDriver, Host, Credentials)
    * @see ru.swat1x.database.sql.driver.Drivers Default drivers
-   * @see Host Create host data object
-   * @see Credentials#of (String, String) Create a credential object
+   * @see Host          Create host data object
+   * @see Credentials   Create a credential object
    * @see Credentials#withNoPassword(String) Create credentials with no password
    */
   public SQLDatabase(
@@ -86,7 +89,7 @@ public class SQLDatabase {
             5,
             new ThreadFactoryBuilder()
                     .setUncaughtExceptionHandler((thread, throwable) -> {
-                      log.error("Exception:", throwable);
+                      logger.error("Exception:", throwable);
                     })
                     .setNameFormat("Database-Thread-%d")
                     .build()
@@ -111,11 +114,17 @@ public class SQLDatabase {
     dataSource.close();
   }
 
-  @Value(staticConstructor = "of")
+  @Getter
+  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+  @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
   public static class Credentials {
 
     String username;
     String password;
+
+    public static Credentials of(String username, String password) {
+      return new Credentials(username, password);
+    }
 
     public static Credentials withNoPassword(String username) {
       return of(username, null);
