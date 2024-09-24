@@ -7,18 +7,18 @@ Maven
 <dependency>
     <groupId>ru.swat1x</groupId>
     <artifactId>database-sql</artifactId>
-    <version>1.8</version>
+    <version>1.9</version>
 </dependency>
 ```
 
 Gradle - Groovy
 ``` groovy
-implementation 'ru.swat1x:database-sql:1.8' 
+implementation 'ru.swat1x:database-sql:1.9' 
 ```
 
 Gradle - Kotlin
 ``` groovy
-implementation("ru.swat1x:database-sql:1.8")
+implementation("ru.swat1x:database-sql:1.9")
 ```
 
 > Так же используется HikariCP зависимость
