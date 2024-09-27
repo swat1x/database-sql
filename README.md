@@ -78,7 +78,7 @@ database.query()
 
 ### Drivers
 Library have default drivers
-`Drivers.MARIADB` & `Drivers.MYSQL` but you can implement `Driver` interface\
+`Drivers.MARIADB` & `Drivers.MYSQL` but you can implement `SQLDriver` interface\
 Java library with each driver you need to setup by yourself like [MariaDB](https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client) or [MySQL](https://mvnrepository.com/artifact/com.mysql/mysql-connector-j)
 
 ### Logger _Important!_

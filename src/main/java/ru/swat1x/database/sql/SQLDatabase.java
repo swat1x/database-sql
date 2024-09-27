@@ -35,7 +35,7 @@ public class SQLDatabase {
    * @param credentials Credentials for connection
    * @see ru.swat1x.database.sql.driver.Drivers Default drivers
    * @see Host Create host data object
-   * @see Credentials#of Create a credential object
+   * @see Credentials#of(String, String) Create a credential object
    * @see Credentials#withNoPassword(String) Create credentials with no password
    */
   public SQLDatabase(

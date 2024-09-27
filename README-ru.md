@@ -78,7 +78,7 @@ database.query()
 
 ### Драйверы
 Библиотека имеет стандартные драйверы, такие как
-`Drivers.MARIADB` & `Drivers.MYSQL`, но Вы можете реализовать свой драйвер, используя `Driver` интерфейс\
+`Drivers.MARIADB` & `Drivers.MYSQL`, но Вы можете реализовать свой драйвер, используя `SQLDriver` интерфейс\
 Сами библиотеки драйверов для Java импортируйте отдельно, такие как [MariaDB](https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client) или [MySQL](https://mvnrepository.com/artifact/com.mysql/mysql-connector-j)
 
 ### Логгер _Важно!_
