@@ -8,4 +8,6 @@ public interface DatabaseLogger {
 
   void error(String text, Object... args);
 
+  void error(String text, Throwable throwable);
+
 }

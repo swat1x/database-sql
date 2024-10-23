@@ -43,7 +43,7 @@ public class SQLDatabase {
           @NotNull @NonNull Host host,
           @Nullable Credentials credentials
   ) {
-    this(driver, host, null, credentials);
+    this(driver, host, null, credentials, PoolConfig.defaultConfig());
   }
 
   /**
@@ -61,35 +61,27 @@ public class SQLDatabase {
           @NotNull @NonNull SQLDriver driver,
           @NotNull @NonNull Host host,
           @Nullable String database,
-          @Nullable Credentials credentials
+          @Nullable Credentials credentials,
+          @NotNull PoolConfig poolConfig
   ) {
     HikariConfig config = new HikariConfig();
+
+    // Apply config
+    poolConfig.applyConfig(
+            host,
+            database,
+            credentials,
+            config
+    );
+    // Apply driver parameters
     driver.setupToConfig(config);
-
-    // Credentials
-    if (credentials != null) {
-      config.setUsername(credentials.getUsername());
-      if (credentials.getPassword() != null) config.setPassword(credentials.getPassword());
-    }
-
-    // Connection settings
-    config.setMaximumPoolSize(100);
-    config.setConnectionTimeout(30000L);
-    config.setIdleTimeout(600000L);
-    config.setMaxLifetime(1800000L);
-    config.addDataSourceProperty("cachePrepStmts", true);
-    config.addDataSourceProperty("prepStmtCacheSize", 250);
-    config.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
-
-    // Settings
-    config.setJdbcUrl(driver.getUrl(host, database, credentials));
 
     this.dataSource = new HikariDataSource(config);
     this.asyncExecutor = Executors.newFixedThreadPool(
             5,
             new ThreadFactoryBuilder()
                     .setUncaughtExceptionHandler((thread, throwable) -> {
-                      logger.error("Exception:", throwable);
+                      logger.error("Exception: {}");
                     })
                     .setNameFormat("Database-Thread-%d")
                     .build()
@@ -115,6 +107,7 @@ public class SQLDatabase {
   }
 
   @Getter
+  @Accessors(fluent = true)
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
   public static class Credentials {
@@ -132,6 +125,8 @@ public class SQLDatabase {
 
   }
 
+  @Getter
+  @Accessors(fluent = true)
   @Value(staticConstructor = "of")
   public static class Host {
 

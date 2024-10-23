@@ -7,18 +7,18 @@ Maven
 <dependency>
     <groupId>ru.swat1x</groupId>
     <artifactId>database-sql</artifactId>
-    <version>1.9</version>
+    <version>1.12</version>
 </dependency>
 ```
 
 Gradle - Groovy
 ``` groovy
-implementation 'ru.swat1x:database-sql:1.9' 
+implementation 'ru.swat1x:database-sql:1.12' 
 ```
 
 Gradle - Kotlin
-``` groovy
-implementation("ru.swat1x:database-sql:1.9")
+``` kotlin
+implementation("ru.swat1x:database-sql:1.12")
 ```
 
 > Its also using HikariCP dependency
@@ -30,20 +30,24 @@ implementation("ru.swat1x:database-sql:1.9")
 ``` java
 SQLDatabase database = new SQLDatabase(
     Drivers.MARIADB,
-    Host.of("database.example.com", 3306),
+    SQLDatabase.Host.of("database.example.com", 3306),
     "myDatabaseName",
-    Credentials.of("myDatabaseUsename", "myDatabasePassword")
-)
+    SQLDatabase.Credentials.of("myDatabaseUsername", "myDatabasePassword"),
+    PoolConfig.builder() // HikariCP config builder
+        .maximumPoolSize(25)
+        .minimumIdle(25)
+        .parameter("useSsl", "true")
+        .build()
+    );
 ```
 
 You also can connect with no password and not select exact database
 
 ``` java
-SQLDatabase database = new SQLDatabase(
-    Drivers.MARIADB,
-    Host.of("database.example.com", 3306),
-    Credentials.withNoPassword("myDatabaseUsename")
-)
+SQLDatabase database = new DatabaseBuilder()
+    .host("database.example.com:3306")
+    .dirver(Drivers.MARIADB)
+    .username("exampleUsername")
 ```
 
 ### Execute queries

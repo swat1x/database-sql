@@ -35,9 +35,8 @@ public class SyncQueryExecutor implements QueryExecutor<QueryResult> {
   @Override
   public @NotNull QueryResult execute(@Language("sql") @NotNull String query,
                                       @NotNull Object... args) {
-    try {
-      Connection connection = dataSource.getConnection();
-      PreparedStatement statement = connection.prepareStatement(query);
+    try(Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
       for (int i = 0; i < args.length; i++) {
         statement.setObject(i + 1, args[i]);
       }

@@ -29,7 +29,13 @@ public class SoutDatabaseLogger implements DatabaseLogger {
     System.out.println(formatString(text, args));
   }
 
-  private static String formatString(String template, Object... objects) {
+    @Override
+    public void error(String text, Throwable throwable) {
+        error(text);
+        throwable.printStackTrace(System.out);
+    }
+
+    private static String formatString(String template, Object... objects) {
     if (template == null || objects == null) {
       throw new IllegalArgumentException("Template or objects list cannot be null");
     } else if (template.isEmpty()) return template;

@@ -25,4 +25,9 @@ public class Slf4jDatabaseLogger implements DatabaseLogger {
   public void error(String text, Object... args) {
     logger.error(text, args);
   }
+
+  @Override
+  public void error(String text, Throwable throwable) {
+    logger.error(text, throwable);
+  }
 }
