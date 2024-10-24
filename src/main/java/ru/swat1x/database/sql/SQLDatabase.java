@@ -74,7 +74,7 @@ public class SQLDatabase {
 
     this.dataSource = new HikariDataSource(config);
     this.asyncExecutor = Executors.newFixedThreadPool(
-            5,
+            config.getMaximumPoolSize(),
             new ThreadFactoryBuilder()
                     .setUncaughtExceptionHandler((thread, throwable) -> {
                       logger.error("Exception: {}");

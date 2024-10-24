@@ -49,9 +49,7 @@ public class AsyncQueryExecutor implements QueryExecutor<CompletableFuture<Query
   }
 
   private CompletableFuture<QueryResult> completeFuture(Supplier<QueryResult> resultSupplier) {
-    CompletableFuture<QueryResult> future = new CompletableFuture<>();
-    asyncExecutor.execute(() -> future.complete(resultSupplier.get()));
-    return future;
+    return CompletableFuture.supplyAsync(resultSupplier, asyncExecutor);
   }
 
 }

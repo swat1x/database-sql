@@ -29,9 +29,7 @@ public class AsyncUpdateExecutor implements RequestExecutor<CompletableFuture<In
   }
 
   private CompletableFuture<Integer> completeFuture(Supplier<Integer> resultSupplier) {
-    CompletableFuture<Integer> future = new CompletableFuture<>();
-    asyncExecutor.execute(() -> future.complete(resultSupplier.get()));
-    return future;
+    return CompletableFuture.supplyAsync(resultSupplier, asyncExecutor);
   }
 
 }
