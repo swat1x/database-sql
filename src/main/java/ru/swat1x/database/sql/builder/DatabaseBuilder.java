@@ -29,11 +29,7 @@ public class DatabaseBuilder {
   String password;
 
   @NotNull
-  SQLDriver driver = Drivers.MYSQL;
-
-  @NotNull
   PoolConfig poolConfig = PoolConfig.defaultConfig();
-
 
   public DatabaseBuilder host(String hostName, int port) {
     return host(String.format("%s:%d", hostName, port));
@@ -41,7 +37,6 @@ public class DatabaseBuilder {
 
   public SQLDatabase build() {
     return new SQLDatabase(
-            driver,
             SQLDatabase.Host.of(host),
             database,
             SQLDatabase.Credentials.of(

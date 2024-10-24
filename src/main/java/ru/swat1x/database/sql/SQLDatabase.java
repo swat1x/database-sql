@@ -39,26 +39,23 @@ public class SQLDatabase {
    * @see Credentials#withNoPassword(String) Create credentials with no password
    */
   public SQLDatabase(
-          @NotNull @NonNull SQLDriver driver,
           @NotNull @NonNull Host host,
           @Nullable Credentials credentials
   ) {
-    this(driver, host, null, credentials, PoolConfig.defaultConfig());
+    this(host, null, credentials, PoolConfig.defaultConfig());
   }
 
   /**
-   * @param driver      Driver for database connection
    * @param host        Host of database server
    * @param database    Database name for connection
    * @param credentials Credentials for connection
-   * @see SQLDatabase#SQLDatabase(SQLDriver, Host, Credentials)
+   * @see SQLDatabase#SQLDatabase(Host, Credentials)
    * @see ru.swat1x.database.sql.driver.Drivers Default drivers
    * @see Host          Create host data object
    * @see Credentials   Create a credential object
    * @see Credentials#withNoPassword(String) Create credentials with no password
    */
   public SQLDatabase(
-          @NotNull @NonNull SQLDriver driver,
           @NotNull @NonNull Host host,
           @Nullable String database,
           @Nullable Credentials credentials,
@@ -73,8 +70,8 @@ public class SQLDatabase {
             credentials,
             config
     );
-    // Apply driver parameters
-    driver.setupToConfig(config);
+    // Apply optional driver parameters
+    poolConfig.driver().setupToConfig(config);
 
     this.dataSource = new HikariDataSource(config);
     this.asyncExecutor = Executors.newFixedThreadPool(

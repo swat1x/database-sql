@@ -1,14 +1,12 @@
 package ru.swat1x.database.sql;
 
 import com.zaxxer.hikari.HikariConfig;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Setter;
-import lombok.Singular;
+import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.swat1x.database.sql.driver.Drivers;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,7 +31,9 @@ public class PoolConfig {
   @Builder.Default
   String poolName = SQLDatabase.class.getName() + "-pool";
 
-  SQLDriver driver;
+  @Getter
+  @Builder.Default
+  SQLDriver driver = Drivers.MYSQL;
 
   @Builder.Default
   Integer maximumPoolSize = 10;

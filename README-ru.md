@@ -7,18 +7,18 @@ Maven
 <dependency>
     <groupId>ru.swat1x</groupId>
     <artifactId>database-sql</artifactId>
-    <version>1.12</version>
+    <version>1.13</version>
 </dependency>
 ```
 
 Gradle - Groovy
 ``` groovy
-implementation 'ru.swat1x:database-sql:1.12' 
+implementation 'ru.swat1x:database-sql:1.13' 
 ```
 
 Gradle - Kotlin
 ``` groovy
-implementation("ru.swat1x:database-sql:1.12")
+implementation("ru.swat1x:database-sql:1.13")
 ```
 
 > Так же используется HikariCP зависимость
@@ -33,7 +33,7 @@ SQLDatabase database = new SQLDatabase(
     SQLDatabase.Host.of("database.example.com", 3306),
     "myDatabaseName",
     SQLDatabase.Credentials.of("myDatabaseUsername", "myDatabasePassword"),
-    PoolConfig.builder() // HikariCP config builder
+    PoolConfig.builder() // билдер конфига для HikariCP 
         .maximumPoolSize(25)
         .minimumIdle(25)
         .parameter("useSsl", "true")
@@ -45,9 +45,11 @@ SQLDatabase database = new SQLDatabase(
 
 ``` java
 SQLDatabase database = new DatabaseBuilder()
+    .poolConfig(PoolConfig.defaultConfig()) // Это значение по стандартку указано там
     .host("database.example.com:3306")
     .dirver(Drivers.MARIADB)
     .username("exampleUsername")
+    .build()
 ```
 
 ### Выполнения запросов
