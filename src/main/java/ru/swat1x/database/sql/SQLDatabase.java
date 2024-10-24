@@ -30,7 +30,6 @@ public class SQLDatabase {
   ExecutorService asyncExecutor;
 
   /**
-   * @param driver      Driver for database connection
    * @param host        Host of database server
    * @param credentials Credentials for connection
    * @see ru.swat1x.database.sql.driver.Drivers Default drivers
