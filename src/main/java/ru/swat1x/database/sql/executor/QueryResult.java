@@ -3,6 +3,7 @@ package ru.swat1x.database.sql.executor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -65,6 +66,11 @@ public interface QueryResult {
   @SneakyThrows
   default Date getTimestamp(String column) {
     return source().getTimestamp(column);
+  }
+
+  @SneakyThrows
+  default Blob getBlob(String column) {
+    return source().getBlob(column);
   }
 
 }

@@ -8,4 +8,6 @@ public class Drivers {
 
   public static final SQLDriver MARIADB = new BaseSQLDriver("mariadb", "org.mariadb.jdbc.Driver");
 
+  public static final SQLDriver H2 = new BaseSQLDriver("h2", "org.h2.Driver");
+
 }

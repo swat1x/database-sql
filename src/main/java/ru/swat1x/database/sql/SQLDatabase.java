@@ -16,6 +16,7 @@ import ru.swat1x.database.sql.executor.update.SyncUpdateExecutor;
 import ru.swat1x.database.sql.logger.DatabaseLogger;
 import ru.swat1x.database.sql.logger.SoutDatabaseLogger;
 import ru.swat1x.database.sql.moved.ThreadFactoryBuilder;
+import ru.swat1x.database.sql.path.DatabasePath;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,33 +31,15 @@ public class SQLDatabase {
   ExecutorService asyncExecutor;
 
   /**
-   * @param host        Host of database server
+   * @param path        path to database
    * @param credentials Credentials for connection
+   * @see DatabasePath path interface
    * @see ru.swat1x.database.sql.driver.Drivers Default drivers
-   * @see Host Create host data object
-   * @see Credentials#of(String, String) Create a credential object
-   * @see Credentials#withNoPassword(String) Create credentials with no password
-   */
-  public SQLDatabase(
-          @NotNull @NonNull Host host,
-          @Nullable Credentials credentials
-  ) {
-    this(host, null, credentials, PoolConfig.defaultConfig());
-  }
-
-  /**
-   * @param host        Host of database server
-   * @param database    Database name for connection
-   * @param credentials Credentials for connection
-   * @see SQLDatabase#SQLDatabase(Host, Credentials)
-   * @see ru.swat1x.database.sql.driver.Drivers Default drivers
-   * @see Host          Create host data object
    * @see Credentials   Create a credential object
    * @see Credentials#withNoPassword(String) Create credentials with no password
    */
   public SQLDatabase(
-          @NotNull @NonNull Host host,
-          @Nullable String database,
+          @NotNull DatabasePath path,
           @Nullable Credentials credentials,
           @NotNull PoolConfig poolConfig
   ) {
@@ -64,8 +47,7 @@ public class SQLDatabase {
 
     // Apply config
     poolConfig.applyConfig(
-            host,
-            database,
+            path,
             credentials,
             config
     );

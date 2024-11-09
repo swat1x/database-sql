@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'ru.swat1x'
-version = '1.13'
+version = '2.1'
 
 java {
     targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
